@@ -1,0 +1,52 @@
+#%RAML 0.8
+title: fylm-printer-app
+version: 1.0.0
+
+schemas:
+  - purchase: |
+      {  "$schema": "http://json-schema.org/draft-03/schema",
+         "type": "object",
+         "description": "A single fylm purchase",
+         "properties": {
+           "id":  { "type": "string", "required": true },
+           "name":  { "type": "string", "required": true },
+           "surname":  { "type": "string", "required": true }
+         }
+      }
+  - purchases: |
+      {  "$schema": "http://json-schema.org/draft-03/schema",
+         "type": "object",
+         "description": "A collection fylm purchases",
+         "properties": {
+           "size":  { "type": "integer", "required": true },
+           "purchases":  {
+              "type": "array",
+              "items": { "$ref": "purchase" }
+           }
+         }
+      }
+
+/purchases:
+  /toprint:
+    get:
+      description: return list of fylms
+      responses:
+        200:
+          body:
+            application/json:
+              schema: purchases
+
+  /download:
+    post:
+      body:
+        application/json:
+          example: |
+            {
+              "fylmIds" : [
+                1,
+                2,
+                3
+              ]
+            }
+
+
